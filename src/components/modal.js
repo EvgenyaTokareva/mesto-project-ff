@@ -1,30 +1,25 @@
-function openPopap(evt) { //функция открытия всех окон
-    evt.classList.add("popup_is-opened"); //добавляем класс открытому окну
-    document.addEventListener('keydown', function(event) {
-        ClosePopupEsc(event, evt)
-    }
-	
-	);
-}
-
-function closePopap(evt) { //функция закрытия всех окон
-    evt.classList.remove("popup_is-opened"); //удаляем класс открытому окну
-    document.removeEventListener('keydown', function(event) {
-        ClosePopupEsc(event, evt);
-    })
+function openPopap(popup) { //функция открытия всех окон
+    popup.classList.add("popup_is-opened"); //добавляем класс открытому окну
+    document.addEventListener('keydown', closePopupEsc);
 };
 
-function ClosePopupEsc(event, evt) { //проверка какая кнопка была нажата
+function closePopap(popup) { //функция закрытия всех окон
+    popup.classList.remove("popup_is-opened"); //удаляем класс открытому окну
+    document.removeEventListener('keydown', closePopupEsc);
+};
+
+function closePopupEsc() { //проверка какая кнопка была нажата
     if (event.key === 'Escape') {
-        closePopap(evt);
+        const openedPopup = document.querySelector('.popup_is-opened');
+        closePopap(openedPopup);
     }
 };
 
-function OverExit(evt, item) {
-    if (evt.target === evt.currentTarget) {		//проверка где был осуществлен клик на оверлее или нет
-				  closePopap(item);
-                }
-				};	
+function overExit(popup, item) {
+    if (popup.target === popup.currentTarget) { //проверка где был осуществлен клик на оверлее или нет
+        closePopap(item);
+    }
+};
 
-export {openPopap, closePopap, ClosePopupEsc, OverExit }; 
+export {openPopap, closePopap, overExit }; 
 
