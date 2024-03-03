@@ -16,9 +16,26 @@ const popupElementName = document.querySelector('.popup__caption'); // назв�
 const cardsList = document.querySelector('.places__list'); // Темплейт карточки
 const cardTemplate = document.querySelector('#card-template').content; // DOM узлы
 const formCart = document.forms.newplace; // форма добавления новой карточки
+const formProfil = document.forms.editprofile;
 //общие переменные 
 const crossButton = document.querySelectorAll('.popup__close'); // кнопка-крест закрытия окон (всех)
 const popupAll = document.querySelectorAll('.popup'); //все окна
 
+const photoProfil = document.querySelector('.profile__image');
+const popapAvatar = document.querySelector('.popup_type_avatar'); 
+const profileImage = document.querySelector('.profile__image');
+const avatarInput = document.querySelector('.popup__input_type_avatar');
+const avatarForm = document.querySelector('.popup__form_type_avatar');
+
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+};
+
 export { buttonOpenProfil, popapProfil, nameInput, jobInput, profileName, profileJob, buttonOpenCart, popapNewCart, nameCartInput, 
-urlCartInput, popupImage, popupElementImage, popupElementName,  cardsList, cardTemplate, formCart, crossButton, popupAll};
+urlCartInput, popupImage, popupElementImage, popupElementName,  cardsList, cardTemplate, formCart, crossButton, popupAll, formProfil, validationConfig, photoProfil,
+popapAvatar, profileImage, avatarInput, avatarForm};

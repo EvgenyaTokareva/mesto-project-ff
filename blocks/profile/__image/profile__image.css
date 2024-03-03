@@ -6,7 +6,7 @@
   border-radius: 50%;
   background-size: cover;
   background-position: center;
-  margin: 0 29px 0 0;
+  transition: opacity .5s ease-in-out;
 }
 
 @media screen and (max-width: 740px) {
@@ -19,4 +19,23 @@
   .profile__image {
     margin-right: 0;
   }
+}
+
+.profile__avatar {
+    background-color: #000;
+    background-image: url('/images/pencil.svg');
+    background-position: 50%;
+    background-repeat: no-repeat;
+    border-radius: 60px;
+    height: 120px;
+    transition: opacity .8s ease-in-out;
+    width: 120px;
+	margin: 0 29px 0 0;
+}
+
+
+
+.profile__image:hover {
+    cursor: pointer;
+    opacity: .2
 }
