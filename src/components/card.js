@@ -1,7 +1,5 @@
-import {cardTemplate} from '../index.js';
+import {cardTemplate} from './index.js';
 import {deleteCardServer, putCardLike, deleteCardLike} from './api.js';
-
-const cardsList = document.querySelector('.places__list');
 
 function createCard(element, deleteCard, photoEnlarged, userCurrentId) { //Функция создания карточки
     const cardElement = cardTemplate.cloneNode(true);
@@ -27,7 +25,7 @@ function createCard(element, deleteCard, photoEnlarged, userCurrentId) { //Фу�
     }
     photoCard.addEventListener('click', () => photoEnlarged(photoCard.src, photoCard.alt));
     Like(element, userCurrentId, cardLike)
-    cardLike.addEventListener('click', () => obrabotkaCardLike(cardLike, idCart, likeSpan))
+    cardLike.addEventListener('click', () => processingCardLike(cardLike, idCart, likeSpan))
     return cardElement;
 };
 
@@ -43,33 +41,40 @@ function Like(element, userCurrentId, cardLike) {
     }
 }
 
-function obrabotkaCardLike(cardLike, idCart, likeSpan) {
+function processingCardLike(cardLike, idCart, likeSpan) {
     if (cardLike.classList.contains('card__like-button_is-active')) {
+		deleteCardLike(idCart)
+		.then(function(newlike) {
+		const Likes = newlike.likes.length;
+            likeSpan.textContent = Likes;
         cardLike.classList.remove("card__like-button_is-active");
-        new Promise(function(resolve) {
-            const like = deleteCardLike(idCart)
-            resolve(like);
-        }).then(function(newlike) {
-            const Likes = newlike.likes.length;
-            likeSpan.textContent = Likes;
+}).catch((err) => {
+            console.log(`Ошибка: ${err.message}`)
         })
+
     } else {
-        cardLike.classList.add("card__like-button_is-active");
-        new Promise(function(resolve) {
-            const like = putCardLike(idCart)
-            resolve(like);
-        }).then(function(newlike) {
+		putCardLike(idCart)
+		.then(function(newlike) {
             const Likes = newlike.likes.length;
             likeSpan.textContent = Likes;
+			cardLike.classList.add("card__like-button_is-active");
+       }).catch((err) => {
+            console.log(`Ошибка: ${err.message}`)
         })
     }
 }
 
 function deleteCard(basketCart, idCart) { // Функция удаления карточки
+    deleteCardServer(idCart)
+    .then(function() {
     const listItem = basketCart.closest('.places__item');
-    listItem.remove();
-    deleteCardServer(idCart);
-};
+    listItem.remove()
+    }).catch((err) => {
+            console.log(`Ошибка: ${err.message}`)
+        })
+}
+
+
 
 
 export {createCard, deleteCard};

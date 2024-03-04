@@ -1,6 +1,3 @@
-import {cardId} from './card.js';
-import {profil, avatarka} from '../index.js';
-
 const config = {
     baseUrl: 'https://nomoreparties.co/v1/wff-cohort-7',
     headers: {

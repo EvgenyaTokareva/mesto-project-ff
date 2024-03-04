@@ -1,16 +1,21 @@
 import { buttonOpenProfil, popapProfil, nameInput, jobInput, profileName, profileJob, buttonOpenCart, popapNewCart,
 nameCartInput, urlCartInput, popupImage, popupElementImage, popupElementName, cardsList, cardTemplate, formCart, crossButton, 
-popupAll, formProfil, validationConfig,  photoProfil, popapAvatar, profileImage,  avatarInput, avatarForm} from './components/constants.js';
-import './index.css';
-import {openPopap, closePopap, overExit} from './components/modal.js';
-import { createCard, deleteCard,} from './components/card.js';
-import {clearValidation, enableValidation} from './components/validation.js';
-import {getInitialCards, getInitialUser, addNewCard, setUserInfo, setUserAvatar} from './components/api.js';
+popupAll, formProfil, validationConfig} from './constants.js';
+import '../index.css';
+import {openPopap, closePopap, overExit} from './modal.js';
+import { createCard, deleteCard,} from './card.js';
+import {clearValidation, enableValidation} from './validation.js';
+import {getInitialCards, getInitialUser, addNewCard, setUserInfo, setUserAvatar} from './api.js';
 
 let userCurrentId;
 let cardLike;
 let profil;
 let avatarka;
+const photoProfil = document.querySelector('.profile__image');
+const popapAvatar = document.querySelector('.popup_type_avatar'); 
+const profileImage = document.querySelector('.profile__image');
+const avatarInput = document.querySelector('.popup__input_type_avatar');
+const avatarForm = document.querySelector('.popup__form_type_avatar');
 
 Promise.all([getInitialUser(), getInitialCards()])
     .then(([profile, cards]) => {
@@ -76,7 +81,7 @@ function photoEnlarged(photoCardSrc, photoCardAlt) { //приближение ф
     popupElementName.textContent = photoCardAlt;
 };
 
-function LoadingText(loading, buttonLoading) { //изменение кнопки сохранения
+function loadingText(loading, buttonLoading) { //изменение кнопки сохранения
     if (loading) {
         buttonLoading.textContent = 'Сохранение...';
     } else {
@@ -85,64 +90,60 @@ function LoadingText(loading, buttonLoading) { //изменение кнопки
 };
 
 popapAvatar.addEventListener('submit', (evt) => { //кнопка сохранить у аватарки
-    evt.preventDefault();
-    const avatarka = avatarInput.value;
-    profileImage.src = avatarka;
-    const buttonLoading = popapAvatar.querySelector('.popup__button');
-    new Promise(function(resolve) {
-            LoadingText(true, buttonLoading)
-            setUserAvatar(avatarka);
-            resolve(avatarka);
+evt.preventDefault();
+const buttonLoading = popapAvatar.querySelector('.popup__button');	
+const avatarka = avatarInput.value;
+setUserAvatar(avatarka)
+.then(function() {
+loadingText(true, buttonLoading)
+profileImage.src = avatarka;
+ closePopap(popapAvatar);
         }).catch((err) => {
             console.log(`Ошибка: ${err.message}`)
         })
         .finally(function() {
-            LoadingText(false, buttonLoading)
-            closePopap(popapAvatar);
+            loadingText(false, buttonLoading)
         })
 });
 
 popapProfil.addEventListener('submit', (evt) => { //кнопка сохранения формы редактирования профиля
-    evt.preventDefault();
+evt.preventDefault();
     const profil = {
         name: nameInput.value,
         about: jobInput.value
     }
-    profileName.textContent = profil.name;
-    profileJob.textContent = profil.about;
-    const buttonLoading = popapProfil.querySelector('.popup__button');
-    new Promise(function(resolve) {
-            LoadingText(true, buttonLoading)
-            setUserInfo(profil);
-            resolve(profil);
+const buttonLoading = popapProfil.querySelector('.popup__button');	
+setUserInfo(profil)	
+.then(function() {
+profileName.textContent = profil.name;
+profileJob.textContent = profil.about;
+loadingText(true, buttonLoading)
+closePopap(popapProfil);
         }).catch((err) => {
             console.log(`Ошибка: ${err.message}`)
         })
         .finally(function() {
-            LoadingText(false, buttonLoading)
-            closePopap(popapProfil);
+            loadingText(false, buttonLoading)        
         })
 });
 
 popapNewCart.addEventListener('submit', (evt) => { //кнопка сохранения формы добавления карты
-    evt.preventDefault();
+evt.preventDefault();
     const name = nameCartInput.value;
     const link = urlCartInput.value;
     const buttonLoading = popapNewCart.querySelector('.popup__button');
-    new Promise(function(resolve) {
-        LoadingText(true, buttonLoading)
-        const cart = addNewCard(name, link)
-        resolve(cart);
-    }).then(function(newCard) {
-
+addNewCard(name, link)	
+.then(function(newCard) {
+        loadingText(true, buttonLoading)
         const userCurrentId = newCard.owner._id;
         const cards = createCard(newCard, deleteCard, photoEnlarged, userCurrentId);
         cardsList.prepend(cards);
+		closePopap(popapNewCart);
     }).catch((err) => {
         console.log(`Ошибка: ${err.message}`)
     }).finally(function() {
-        LoadingText(false, buttonLoading)
-        closePopap(popapNewCart);
+        loadingText(false, buttonLoading)
+        
     });
 });
 

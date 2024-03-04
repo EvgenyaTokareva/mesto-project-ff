@@ -21,12 +21,6 @@ const formProfil = document.forms.editprofile;
 const crossButton = document.querySelectorAll('.popup__close'); // кнопка-крест закрытия окон (всех)
 const popupAll = document.querySelectorAll('.popup'); //все окна
 
-const photoProfil = document.querySelector('.profile__image');
-const popapAvatar = document.querySelector('.popup_type_avatar'); 
-const profileImage = document.querySelector('.profile__image');
-const avatarInput = document.querySelector('.popup__input_type_avatar');
-const avatarForm = document.querySelector('.popup__form_type_avatar');
-
 const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -37,5 +31,4 @@ const validationConfig = {
 };
 
 export { buttonOpenProfil, popapProfil, nameInput, jobInput, profileName, profileJob, buttonOpenCart, popapNewCart, nameCartInput, 
-urlCartInput, popupImage, popupElementImage, popupElementName,  cardsList, cardTemplate, formCart, crossButton, popupAll, formProfil, validationConfig, photoProfil,
-popapAvatar, profileImage, avatarInput, avatarForm};
+urlCartInput, popupImage, popupElementImage, popupElementName,  cardsList, cardTemplate, formCart, crossButton, popupAll, formProfil, validationConfig};
