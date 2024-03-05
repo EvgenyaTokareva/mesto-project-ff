@@ -90,14 +90,14 @@ function loadingText(loading, buttonLoading) { //изменение кнопки
 };
 
 popapAvatar.addEventListener('submit', (evt) => { //кнопка сохранить у аватарки
-evt.preventDefault();
-const buttonLoading = popapAvatar.querySelector('.popup__button');	
-const avatarka = avatarInput.value;
-setUserAvatar(avatarka)
-.then(function() {
-loadingText(true, buttonLoading)
-profileImage.src = avatarka;
- closePopap(popapAvatar);
+    evt.preventDefault();
+    const buttonLoading = popapAvatar.querySelector('.popup__button');
+    const avatarka = avatarInput.value;
+    setUserAvatar(avatarka)
+        .then(function(data) {
+            loadingText(true, buttonLoading)
+            profileImage.src = data.avatar;
+            closePopap(popapAvatar);
         }).catch((err) => {
             console.log(`Ошибка: ${err.message}`)
         })
@@ -107,44 +107,44 @@ profileImage.src = avatarka;
 });
 
 popapProfil.addEventListener('submit', (evt) => { //кнопка сохранения формы редактирования профиля
-evt.preventDefault();
+    evt.preventDefault();
     const profil = {
         name: nameInput.value,
         about: jobInput.value
     }
-const buttonLoading = popapProfil.querySelector('.popup__button');	
-setUserInfo(profil)	
-.then(function() {
-profileName.textContent = profil.name;
-profileJob.textContent = profil.about;
-loadingText(true, buttonLoading)
-closePopap(popapProfil);
+    const buttonLoading = popapProfil.querySelector('.popup__button');
+    setUserInfo(profil)
+        .then(function(data) {
+            profileName.textContent = data.name;
+            profileJob.textContent = data.about;
+            loadingText(true, buttonLoading)
+            closePopap(popapProfil);
         }).catch((err) => {
             console.log(`Ошибка: ${err.message}`)
         })
         .finally(function() {
-            loadingText(false, buttonLoading)        
+            loadingText(false, buttonLoading)
         })
 });
 
 popapNewCart.addEventListener('submit', (evt) => { //кнопка сохранения формы добавления карты
-evt.preventDefault();
+    evt.preventDefault();
     const name = nameCartInput.value;
     const link = urlCartInput.value;
     const buttonLoading = popapNewCart.querySelector('.popup__button');
-addNewCard(name, link)	
-.then(function(newCard) {
-        loadingText(true, buttonLoading)
-        const userCurrentId = newCard.owner._id;
-        const cards = createCard(newCard, deleteCard, photoEnlarged, userCurrentId);
-        cardsList.prepend(cards);
-		closePopap(popapNewCart);
-    }).catch((err) => {
-        console.log(`Ошибка: ${err.message}`)
-    }).finally(function() {
-        loadingText(false, buttonLoading)
-        
-    });
+    addNewCard(name, link)
+        .then(function(newCard) {
+            loadingText(true, buttonLoading)
+            const userCurrentId = newCard.owner._id;
+            const cards = createCard(newCard, deleteCard, photoEnlarged, userCurrentId);
+            cardsList.prepend(cards);
+            closePopap(popapNewCart);
+        }).catch((err) => {
+            console.log(`Ошибка: ${err.message}`)
+        }).finally(function() {
+            loadingText(false, buttonLoading)
+
+        });
 });
 
 export { popupAll, cardTemplate, validationConfig, profil, avatarka};

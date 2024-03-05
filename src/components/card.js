@@ -24,12 +24,12 @@ function createCard(element, deleteCard, photoEnlarged, userCurrentId) { //Фу�
         basketCart.remove();
     }
     photoCard.addEventListener('click', () => photoEnlarged(photoCard.src, photoCard.alt));
-    Like(element, userCurrentId, cardLike)
+    checkingLikes(element, userCurrentId, cardLike)
     cardLike.addEventListener('click', () => processingCardLike(cardLike, idCart, likeSpan))
     return cardElement;
 };
 
-function Like(element, userCurrentId, cardLike) {
+function checkingLikes(element, userCurrentId, cardLike) {
     let massivLikes = [];
     element.likes.forEach((item) => {
         massivLikes.push(item._id)
@@ -43,38 +43,35 @@ function Like(element, userCurrentId, cardLike) {
 
 function processingCardLike(cardLike, idCart, likeSpan) {
     if (cardLike.classList.contains('card__like-button_is-active')) {
-		deleteCardLike(idCart)
-		.then(function(newlike) {
-		const Likes = newlike.likes.length;
-            likeSpan.textContent = Likes;
-        cardLike.classList.remove("card__like-button_is-active");
-}).catch((err) => {
-            console.log(`Ошибка: ${err.message}`)
-        })
+        deleteCardLike(idCart)
+            .then(function(newlike) {
+                const Likes = newlike.likes.length;
+                likeSpan.textContent = Likes;
+                cardLike.classList.remove("card__like-button_is-active");
+            }).catch((err) => {
+                console.log(`Ошибка: ${err.message}`)
+            })
 
     } else {
-		putCardLike(idCart)
-		.then(function(newlike) {
-            const Likes = newlike.likes.length;
-            likeSpan.textContent = Likes;
-			cardLike.classList.add("card__like-button_is-active");
-       }).catch((err) => {
-            console.log(`Ошибка: ${err.message}`)
-        })
+        putCardLike(idCart)
+            .then(function(newlike) {
+                const Likes = newlike.likes.length;
+                likeSpan.textContent = Likes;
+                cardLike.classList.add("card__like-button_is-active");
+            }).catch((err) => {
+                console.log(`Ошибка: ${err.message}`)
+            })
     }
 }
 
 function deleteCard(basketCart, idCart) { // Функция удаления карточки
     deleteCardServer(idCart)
-    .then(function() {
-    const listItem = basketCart.closest('.places__item');
-    listItem.remove()
-    }).catch((err) => {
+        .then(function() {
+            const listItem = basketCart.closest('.places__item');
+            listItem.remove()
+        }).catch((err) => {
             console.log(`Ошибка: ${err.message}`)
         })
 }
-
-
-
 
 export {createCard, deleteCard};

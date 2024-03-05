@@ -1,5 +1,4 @@
 function enableValidation(validationConfig) {
-	
     const forms = document.querySelectorAll(validationConfig.formSelector);
     forms.forEach((form) => {
         setEventListeners(form, validationConfig);
